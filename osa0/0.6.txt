@@ -1,0 +1,8 @@
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+palvelin-->selain: HTTP status 201 Created ("message: note created")
+
+note over selain:
+tapahtumankäsittelijä aktivoituu
+selaimessa, jolloin selain renderöi
+päivitetyt muistiinpanot uudestaan
+end note
