@@ -29,7 +29,10 @@ const App = () => {
                 name: 'Komponenttien tila',
                 exercises: 14
             },
-
+            {
+                name: 'Redux',
+                exercises: 7
+            }
         ]
     }
     return (
@@ -77,11 +80,11 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
-    let exercises = 0;
-
-    for (var i = 0; i < props.props.course.parts.length; i++) {
-        exercises += props.props.course.parts[i].exercises;
-    }
+    let exercises = props.props.course.parts.reduce((accumulator, currentValue) => {
+        console.log('wtf', accumulator, currentValue)
+        let exercise = currentValue.exercises;
+        return accumulator + exercise;
+    }, 0);
 
     return (
         <div>
