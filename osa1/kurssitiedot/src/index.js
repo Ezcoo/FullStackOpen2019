@@ -1,5 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { notEqual } from 'assert';
+
+const Course = (course) => {
+    console.log(course);
+    return (
+        <div>
+            <Header props={course} />
+            <Content props={course} />
+            <Total props={course} />
+        </div>
+    )
+}
 
 const App = () => {
     const course = {
@@ -16,14 +28,13 @@ const App = () => {
             {
                 name: 'Komponenttien tila',
                 exercises: 14
-            }
+            },
+
         ]
     }
     return (
         <div>
-            <Header course={course} />
-            <Content course={course} />
-            <Total course={course} />
+            <Course course={course} />
         </div >
     )
 }
@@ -31,38 +42,50 @@ const App = () => {
 const Header = (props) => {
     return (
         <div>
-            {props.course.name}
+            <h1>{props.props.course.name}</h1>
         </div>
     )
 }
 
 const Content = (props) => {
     console.log(props);
+    const parts = () => props.props.course.parts.map(part =>
+        <Part
+            key={part.name}
+            name={part.name}
+            exercises={part.exercises}
+        />
+    )
+
     return (
         <div>
-            <Part part={props.course.parts[0].name} exercises={props.course.parts[0].exercises} />
-            <Part part={props.course.parts[1].name} exercises={props.course.parts[1].exercises} />
-            <Part part={props.course.parts[2].name} exercises={props.course.parts[2].exercises} />
+            {parts()}
         </div>
     )
+
+
 }
 
 const Part = (props) => {
     return (
         <div>
             <p>
-                {props.part} {props.exercises}
+                {props.name} {props.exercises}
             </p>
         </div>
     )
 }
 
 const Total = (props) => {
+    let exercises = 0;
+
+    for (var i = 0; i < props.props.course.parts.length; i++) {
+        exercises += props.props.course.parts[i].exercises;
+    }
+
     return (
         <div>
-            <p>
-                yhteensä {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises} tehtävää
-            </p>
+            <p>yhteensä {exercises} tehtävää</p>
         </div>
     )
 }
