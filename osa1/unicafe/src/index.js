@@ -7,16 +7,40 @@ const Button = ({ handleClick, text }) => (
     </button>
 )
 
+const Statistic = (props) => {
+    return (
+        <>
+            {props.text} {props.value}
+        </>
+    )
+}
+
 const Statistics = (props) => {
     return (
         <div>
-            <h1>statistiikka</h1>
-            <p>hyvä {props.good}</p>
-            <p>neutraali {props.neutral}</p>
-            <p>huono {props.bad}</p>
-            <p>yhteensä {props.good + props.neutral + props.bad}</p>
-            <p>keskiarvo {(props.good - props.bad) / props.feedbackTotal}</p>
-            <p>positiivisia {Math.round(props.good / props.feedbackTotal * 100)} %</p>
+            <Statistic text="hyvä" value={props.good} />
+            <br></br>
+            <Statistic text="neutraali" value={props.neutral} />
+            <br></br>
+            <Statistic text="huono" value={props.bad} />
+            <br></br>
+            <Statistic text="yhteensä" value={props.feedbackTotal} />
+            <br></br>
+            <Statistic text="keskiarvo" value={(props.good - props.bad) / props.feedbackTotal} />
+            <br></br>
+            <Statistic text="positiivisia" value={Math.round(props.good / props.feedbackTotal * 100)} />
+            <span> %</span>
+        </div>
+    )
+}
+
+const Feedback = (props) => {
+    return (
+        <div>
+            <h1>anna palautetta</h1>
+            <Button handleClick={props.handleGoodClick} text='hyvä' />
+            <Button handleClick={props.handleNeutralClick} text='neutraali' />
+            <Button handleClick={props.handleBadClick} text='huono' />
         </div>
     )
 }
@@ -43,15 +67,24 @@ const App = () => {
         setfeedbackTotal(feedbackTotal + 1)
     }
 
-    return (
-        <div>
-            <h1>anna palautetta</h1>
-            <Button handleClick={handleGoodClick} text='hyvä' />
-            <Button handleClick={handleNeutralClick} text='neutraali' />
-            <Button handleClick={handleBadClick} text='huono' />
-            <Statistics good={good} neutral={neutral} bad={bad} feedbackTotal={feedbackTotal} />
-        </div>
-    )
+
+    if (feedbackTotal === 0) {
+        return (
+            <div>
+                <Feedback handleGoodClick={handleGoodClick} handleNeutralClick={handleNeutralClick} handleBadClick={handleBadClick} />
+                <h1>statistiikka</h1>
+                <p>Ei yhtään palautetta annettu</p>
+            </div>
+        )
+    } else {
+        return (
+            <div>
+                <Feedback handleGoodClick={handleGoodClick} handleNeutralClick={handleNeutralClick} handleBadClick={handleBadClick} />
+                <h1>statistiikka</h1>
+                <Statistics good={good} neutral={neutral} bad={bad} feedbackTotal={feedbackTotal} />
+            </div>
+        )
+    }
 }
 
 ReactDOM.render(<App />,
