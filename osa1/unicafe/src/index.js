@@ -10,7 +10,7 @@ const Button = ({ handleClick, text }) => (
 const Statistic = (props) => {
     return (
         <>
-            {props.text} {props.value}
+            {props.value}
         </>
     )
 }
@@ -18,18 +18,34 @@ const Statistic = (props) => {
 const Statistics = (props) => {
     return (
         <div>
-            <Statistic text="hyvä" value={props.good} />
-            <br></br>
-            <Statistic text="neutraali" value={props.neutral} />
-            <br></br>
-            <Statistic text="huono" value={props.bad} />
-            <br></br>
-            <Statistic text="yhteensä" value={props.feedbackTotal} />
-            <br></br>
-            <Statistic text="keskiarvo" value={(props.good - props.bad) / props.feedbackTotal} />
-            <br></br>
-            <Statistic text="positiivisia" value={Math.round(props.good / props.feedbackTotal * 100)} />
-            <span> %</span>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>hyvä </td>
+                        <td><Statistic value={props.good} /> </td>
+                    </tr>
+                    <tr>
+                        <td>neutraali</td>
+                        <td><Statistic value={props.neutral} /> </td>
+                    </tr>
+                    <tr>
+                        <td>huono </td>
+                        <td><Statistic value={props.bad} /> </td>
+                    </tr>
+                    <tr>
+                        <td>yhteensä </td>
+                        <td><Statistic value={props.feedbackTotal} /> </td>
+                    </tr>
+                    <tr>
+                        <td>keskiarvo </td>
+                        <td><Statistic value={(props.good - props.bad) / props.feedbackTotal} /> </td>
+                    </tr>
+                    <tr>
+                        <td>positiivisia </td>
+                        <td><Statistic value={Math.round(props.good / props.feedbackTotal * 100)} /> <span> %</span> </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     )
 }
