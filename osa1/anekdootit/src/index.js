@@ -3,16 +3,34 @@ import ReactDOM from 'react-dom'
 
 const Button = (props) => {
     return (
-    <button onClick={props.handleClick}>
-        {props.text}
-    </button>
+        <button onClick={props.handleClick}>
+            {props.text}
+        </button>
+    )
+}
+
+const MostVotedAnecdote = (props) => {
+    let maxNumber = Number.MIN_VALUE;
+    let indexOfMaxNumber = 0;
+    for (var i = 0; i < props.anecdotes.length; i++) {
+        if (props.votes[i] > maxNumber) {
+            maxNumber = props.votes[i];
+            indexOfMaxNumber = i;
+        }
+    }
+    return (
+        <div>
+            <span>{props.anecdotes[indexOfMaxNumber]}</span>
+            <p>has {props.votes[indexOfMaxNumber]} votes</p>
+        </div>
     )
 }
 
 const App = (props) => {
     const [selected, setSelected] = useState(0)
+    const [votes, setVotes] = useState(points)
 
-    const handleClick = () => {
+    const randomClick = () => {
         let randomNumber = Math.floor(Math.random() * 6)
 
         if (randomNumber > 5) {
@@ -22,12 +40,24 @@ const App = (props) => {
         setSelected(randomNumber);
     }
 
-    console.log({selected});
+    const voteClick = () => {
+        let copy = { ...votes };
+        copy[selected] = copy[selected] + 1;
+        setVotes(copy);
+        console.log(selected);
+        console.log(copy[selected]);
+        console.log(votes);
+    }
 
     return (
         <div>
-            <Button text="next anecdote" handleClick={handleClick} />
+            <h1>Anecdote of the day</h1>
             <p>{anecdotes[selected]}</p>
+            <p>has {votes[selected]} votes</p>
+            <Button text="next anecdote" handleClick={randomClick} />
+            <Button text="vote" handleClick={voteClick} />
+            <h1>Anecdote with most votes</h1>
+            <MostVotedAnecdote anecdotes={anecdotes} votes={votes} />
         </div>
     )
 }
@@ -40,6 +70,15 @@ const anecdotes = [
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
+
+const points = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0
+}
 
 ReactDOM.render(
     <App anecdotes={anecdotes} />,
