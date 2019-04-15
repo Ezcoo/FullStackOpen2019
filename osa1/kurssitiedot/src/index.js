@@ -3,58 +3,86 @@ import ReactDOM from 'react-dom'
 import { notEqual } from 'assert';
 
 const Course = (course) => {
-    console.log(course);
+    console.log('course', course);
     return (
         <div>
-            <Header props={course} />
-            <Content props={course} />
-            <Total props={course} />
+            <Header course={course} />
+            <Content course={course} />
         </div>
     )
 }
 
 const App = () => {
-    const course = {
-        name: 'Half Stack -sovelluskehitys',
-        parts: [
-            {
-                name: 'Reactin perusteet',
-                exercises: 10
-            },
-            {
-                name: 'Tiedonvälitys propseilla',
-                exercises: 7
-            },
-            {
-                name: 'Komponenttien tila',
-                exercises: 14
-            },
-            {
-                name: 'Redux',
-                exercises: 7
-            }
-        ]
-    }
+    const courses = [
+        {
+            name: 'Half Stack -sovelluskehitys',
+            id: 1,
+            parts: [
+                {
+                    name: 'Reactin perusteet',
+                    exercises: 10,
+                    id: 1
+                },
+                {
+                    name: 'Tiedonvälitys propseilla',
+                    exercises: 7,
+                    id: 2
+                },
+                {
+                    name: 'Komponenttien tila',
+                    exercises: 14,
+                    id: 3
+                }
+            ]
+        },
+        {
+            name: 'Node.js',
+            id: 2,
+            parts: [
+                {
+                    name: 'Routing',
+                    exercises: 3,
+                    id: 1
+                },
+                {
+                    name: 'Middlewaret',
+                    exercises: 7,
+                    id: 2
+                }
+            ]
+        }
+    ]
+
+    const coursesMap = () => courses.map(course =>
+        <Course
+            key={course.id}
+            course={course}
+        />
+    );
+
+    const coursesMapCopy = coursesMap();
+
     return (
         <div>
-            <Course course={course} />
+            {coursesMapCopy}
+            <Total courses={courses} />
         </div >
     )
 }
 
 const Header = (props) => {
+    console.log('header ', props)
     return (
         <div>
-            <h1>{props.props.course.name}</h1>
+            <h1>{props.course.course.name}</h1>
         </div>
     )
 }
 
 const Content = (props) => {
-    console.log(props);
-    const parts = () => props.props.course.parts.map(part =>
+    const parts = () => props.course.course.parts.map(part =>
         <Part
-            key={part.name}
+            key={part.id}
             name={part.name}
             exercises={part.exercises}
         />
@@ -80,9 +108,8 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
-    let exercises = props.props.course.parts.reduce((accumulator, currentValue) => {
-        console.log('wtf', accumulator, currentValue)
-        let exercise = currentValue.exercises;
+    let exercises = props.courses.reduce((accumulator, currentValue) => {
+        let exercise = currentValue.parts.reduce((acc, { exercises }) => acc + exercises, 0);
         return accumulator + exercise;
     }, 0);
 
